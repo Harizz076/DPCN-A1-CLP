@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Opinion Network Visualizer | DPCN Assignment 1</title>
+  <meta name="description" content="Interactive opinion network visualization and complex network analysis based on survey responses across Technology, Education, Ethics, and Environment.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/src/style.css">
+</head>
+<body>
+  <div id="app" class="app-layout">
+    <!-- Top Navigation Bar -->
+    <header class="navbar" id="main-header">
+      <div class="brand">
+        <div class="brand-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="18" cy="5" r="3"></circle>
+            <circle cx="6" cy="12" r="3"></circle>
+            <circle cx="18" cy="19" r="3"></circle>
+            <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+            <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <div class="brand-title">Opinion Network Visualizer</div>
+          <div class="brand-subtitle">DPCN Assignment 1 &bull; Question-Similarity Graph</div>
+        </div>
+      </div>
+
+      <!-- View Switcher -->
+      <div class="view-switcher">
+        <button id="btn-view-graph" class="tab-btn active" title="Force-directed network visualization">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="6" cy="6" r="3"/><circle cx="18" cy="18" r="3"/><circle cx="18" cy="6" r="3"/><path d="M8.5 7.5l7 7"/><path d="M18 9v6"/></svg>
+          Network Graph
+        </button>
+        <button id="btn-view-heatmap" class="tab-btn" title="Pairwise correlation heatmap">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M3 15h18"/><path d="M9 3v18"/><path d="M15 3v18"/></svg>
+          Similarity Heatmap
+        </button>
+      </div>
+
+      <!-- Global Actions -->
+      <div class="nav-actions">
+        <div class="badge-status" id="cohort-badge" title="Filtered respondents count">
+          <span class="status-dot"></span>
+          <span id="respondent-count-text">85 Complete Respondents</span>
+        </div>
+        <button id="btn-reset-zoom" class="icon-btn" title="Reset Zoom & Center View">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+        </button>
+        <button id="btn-export-png" class="action-btn" title="Download network screenshot">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Export PNG
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <div class="main-body">
+      <!-- Left Sidebar: Controls -->
+      <aside class="sidebar-left" id="controls-sidebar">
+        <!-- Search -->
+        <div class="control-group">
+          <label class="control-label" for="question-search">Search Questions</label>
+          <div class="search-input-wrapper">
+            <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" id="question-search" placeholder="Filter by ID or keyword (e.g. AI, climate)..." autocomplete="off">
+            <button id="search-clear-btn" class="search-clear" style="display: none;">&times;</button>
+          </div>
+        </div>
+
+        <!-- Category Filter -->
+        <div class="control-group">
+          <label class="control-label" for="category-select">Graph Scope & Category</label>
+          <select id="category-select" class="custom-select">
+            <option value="ALL">Entire Graph (All 60 Questions &bull; N=85)</option>
+            <option value="T">Technology (T01–T15 &bull; N=91)</option>
+            <option value="E">Education (E01–E15 &bull; N=87)</option>
+            <option value="S">Ethics & Society (S01–S15 &bull; N=87)</option>
+            <option value="V">Environment (V01–V15 &bull; N=85)</option>
+          </select>
+          <p class="control-hint" id="category-scope-hint">Uses respondents with 100% full responses across all categories.</p>
+        </div>
+
+        <!-- Similarity Metric -->
+        <div class="control-group">
+          <label class="control-label" for="metric-select">Similarity Metric (Edge Weight)</label>
+          <select id="metric-select" class="custom-select">
+            <option value="pearson" selected>Pearson Correlation (r &gt; 0)</option>
+            <option value="agreement">Mean Response Agreement (0 to 100%)</option>
+            <option value="cosine">Cosine Similarity</option>
+          </select>
+          <p class="control-hint" id="metric-hint">Pearson correlation reflects whether respondents covary in positive/negative agreement.</p>
+        </div>
+
+        <!-- Threshold Slider -->
+        <div class="control-group">
+          <div class="slider-header">
+            <label class="control-label" for="threshold-slider">Edge Threshold (&tau;)</label>
+            <span class="slider-value-badge" id="threshold-val-badge">&ge; 0.35</span>
+          </div>
+          <input type="range" id="threshold-slider" min="0.10" max="0.75" step="0.01" value="0.35">
+          <div class="slider-ticks">
+            <span class="tick" data-val="0.20">0.20</span>
+            <span class="tick" data-val="0.30">0.30</span>
+            <span class="tick" data-val="0.40">0.40</span>
+            <span class="tick" data-val="0.50">0.50</span>
+            <span class="tick" data-val="0.60">0.60</span>
+          </div>
+          <div class="threshold-info">
+            <span id="active-edges-count">-- edges active</span>
+            <label class="checkbox-inline">
+              <input type="checkbox" id="mst-guarantee-toggle">
+              <span title="Ensure every question has at least 1 edge to its closest match">Keep Connected (MST)</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Node Sizing -->
+        <div class="control-group">
+          <label class="control-label" for="node-size-select">Node Size By</label>
+          <select id="node-size-select" class="custom-select">
+            <option value="degree" selected>Degree (Number of Connections)</option>
+            <option value="betweenness">Betweenness Centrality (Bridge Hubs)</option>
+            <option value="variance">Opinion Polarization (Variance)</option>
+            <option value="mean">Consensus / Mean Agreement Score</option>
+            <option value="uniform">Uniform Size</option>
+          </select>
+        </div>
+
+        <!-- Color Mode -->
+        <div class="control-group">
+          <label class="control-label" for="color-mode-select">Node Color By</label>
+          <select id="color-mode-select" class="custom-select">
+            <option value="category" selected>Domain Category (T, E, S, V)</option>
+            <option value="community">Detected Community (Modularity Clusters)</option>
+          </select>
+        </div>
+
+        <!-- Category Legend -->
+        <div class="legend-card" id="category-legend">
+          <div class="legend-title">Question Domains</div>
+          <div class="legend-grid">
+            <div class="legend-item" data-cat="T">
+              <span class="color-dot" style="background: #0284c7;"></span>
+              <span class="legend-label">Technology (T01–T15)</span>
+            </div>
+            <div class="legend-item" data-cat="E">
+              <span class="color-dot" style="background: #d97706;"></span>
+              <span class="legend-label">Education (E01–E15)</span>
+            </div>
+            <div class="legend-item" data-cat="S">
+              <span class="color-dot" style="background: #7c3aed;"></span>
+              <span class="legend-label">Ethics & Society (S01–S15)</span>
+            </div>
+            <div class="legend-item" data-cat="V">
+              <span class="color-dot" style="background: #059669;"></span>
+              <span class="legend-label">Environment (V01–V15)</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Physics Simulation Toggle -->
+        <div class="control-group-compact">
+          <label class="checkbox-inline">
+            <input type="checkbox" id="physics-freeze-toggle">
+            <span>Freeze Node Physics</span>
+          </label>
+          <label class="checkbox-inline">
+            <input type="checkbox" id="show-labels-toggle" checked>
+            <span>Show Node Labels</span>
+          </label>
+        </div>
+      </aside>
+
+      <!-- Center Visualization Canvas -->
+      <main class="canvas-container" id="canvas-wrapper">
+        <!-- Network Graph SVG/Canvas -->
+        <div id="graph-view" class="view-panel active">
+          <svg id="network-svg"></svg>
+          <div id="graph-tooltip" class="graph-tooltip"></div>
+          <div class="canvas-watermark">Click any node to inspect &bull; Drag to reposition &bull; Scroll to zoom</div>
+        </div>
+
+        <!-- Heatmap View -->
+        <div id="heatmap-view" class="view-panel">
+          <div class="heatmap-toolbar">
+            <span class="heatmap-title">Correlation & Agreement Matrix</span>
+            <div class="heatmap-legend">
+              <span class="legend-text">-0.4</span>
+              <div class="heatmap-gradient-bar"></div>
+              <span class="legend-text">+0.7</span>
+            </div>
+          </div>
+          <div class="heatmap-scroll-container">
+            <div id="heatmap-container"></div>
+          </div>
+        </div>
+
+        <!-- Bottom Network Metrics HUD -->
+        <div class="metrics-hud" id="metrics-bar">
+          <div class="metric-card">
+            <div class="metric-val" id="metric-nodes">60</div>
+            <div class="metric-label">Nodes</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-val" id="metric-edges">--</div>
+            <div class="metric-label">Active Edges</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-val" id="metric-density">--</div>
+            <div class="metric-label">Density</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-val" id="metric-avg-degree">--</div>
+            <div class="metric-label">Avg Degree</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-val" id="metric-clustering">--</div>
+            <div class="metric-label">Avg Clustering (C)</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-val" id="metric-modularity">--</div>
+            <div class="metric-label">Modularity (Q)</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-val" id="metric-path-length">--</div>
+            <div class="metric-label">Avg Path Length</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-val" id="metric-diameter">--</div>
+            <div class="metric-label">Diameter</div>
+          </div>
+        </div>
+      </main>
+
+      <!-- Right Sidebar: Question Inspector & Node Analytics -->
+      <aside class="sidebar-right" id="inspector-panel">
+        <div class="inspector-empty" id="inspector-empty-state">
+          <div class="empty-icon">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+          </div>
+          <div class="empty-title">Select a Question Node</div>
+          <div class="empty-desc">Click on any node in the opinion network to view its full wording, student response distribution, centrality metrics, and most similar questions.</div>
+        </div>
+
+        <div class="inspector-content" id="inspector-details" style="display: none;">
+          <div class="inspector-header">
+            <div class="inspector-tag-row">
+              <span class="category-badge" id="node-badge">Technology</span>
+              <span class="qid-badge" id="node-id">T01</span>
+              <button id="btn-close-inspector" class="close-btn" title="Close Panel">&times;</button>
+            </div>
+            <h3 class="node-question-text" id="node-text">Question statement goes here...</h3>
+          </div>
+
+          <!-- Likert Stats Summary -->
+          <div class="stats-overview-row">
+            <div class="stat-pill">
+              <span class="stat-num" id="node-mean">4.12</span>
+              <span class="stat-sub">Mean Score (1-5)</span>
+            </div>
+            <div class="stat-pill">
+              <span class="stat-num" id="node-variance">0.68</span>
+              <span class="stat-sub">Polarization / Std</span>
+            </div>
+            <div class="stat-pill">
+              <span class="stat-num" id="node-degree-val">12</span>
+              <span class="stat-sub">Connected Edges</span>
+            </div>
+          </div>
+
+          <!-- Response Distribution Chart -->
+          <div class="distribution-section">
+            <div class="section-heading">Class Response Breakdown</div>
+            <div class="distribution-bars" id="dist-bars-container">
+              <!-- Rendered dynamically -->
+            </div>
+          </div>
+
+          <!-- Graph Centrality Metrics -->
+          <div class="centrality-section">
+            <div class="section-heading">Network Centralities</div>
+            <div class="centrality-grid">
+              <div class="centrality-item">
+                <span class="c-label">Degree Centrality:</span>
+                <span class="c-val" id="val-deg-centrality">0.24</span>
+              </div>
+              <div class="centrality-item">
+                <span class="c-label">Betweenness Centrality:</span>
+                <span class="c-val" id="val-betweenness">0.082</span>
+              </div>
+              <div class="centrality-item">
+                <span class="c-label">Closeness Centrality:</span>
+                <span class="c-val" id="val-closeness">0.51</span>
+              </div>
+              <div class="centrality-item">
+                <span class="c-label">Community ID:</span>
+                <span class="c-val" id="val-community">Cluster 1</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Most Similar Questions -->
+          <div class="relations-section">
+            <div class="section-heading">Top Correlated Questions</div>
+            <div class="relation-list" id="top-similar-list">
+              <!-- Rendered dynamically -->
+            </div>
+          </div>
+
+          <!-- Most Divergent Questions -->
+          <div class="relations-section">
+            <div class="section-heading">Most Divergent Opinions</div>
+            <div class="relation-list" id="top-divergent-list">
+              <!-- Rendered dynamically -->
+            </div>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
