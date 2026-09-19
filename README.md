@@ -41,14 +41,12 @@ It also updates `respondent_network_3d.html` so the 3D viewer shows the newest d
 python3 generate_plots.py
 ```
 
-This reads `report_data.json` and saves six chart images into a `figures/` folder:
+This reads `report_data.json` and saves four chart images into a `figures/` folder:
 
 - `percolation_analysis.png`
 - `leaning_pie.png`
 - `category_means_bar.png`
 - `correlation_distribution.png`
-- `community_null_model.png`
-- `community_core_overlap.png`
 
 ### 3. Look at the 3D network
 
