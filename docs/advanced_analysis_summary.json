@@ -1,0 +1,379 @@
+{
+  "cat_mean_correlations": [
+    [
+      0.10353333333333334,
+      0.05406355555555555,
+      0.12266266666666667,
+      0.10861422222222224
+    ],
+    [
+      0.05406355555555556,
+      0.12075714285714287,
+      0.13698,
+      0.14163155555555557
+    ],
+    [
+      0.12266266666666666,
+      0.13698000000000002,
+      0.2574447619047619,
+      0.2443542222222222
+    ],
+    [
+      0.10861422222222221,
+      0.14163155555555554,
+      0.2443542222222222,
+      0.33797333333333335
+    ]
+  ],
+  "question_communities": [
+    {
+      "id": 1,
+      "size": 14,
+      "nodes": [
+        "E11",
+        "S04",
+        "S10",
+        "S12",
+        "S14",
+        "T03",
+        "V05",
+        "V07",
+        "V08",
+        "V09",
+        "V12",
+        "V13",
+        "V14",
+        "V15"
+      ],
+      "category_breakdown": {
+        "T": 1,
+        "E": 1,
+        "S": 4,
+        "V": 8
+      }
+    },
+    {
+      "id": 2,
+      "size": 9,
+      "nodes": [
+        "E08",
+        "S01",
+        "S02",
+        "S03",
+        "S13",
+        "S15",
+        "V03",
+        "V04",
+        "V10"
+      ],
+      "category_breakdown": {
+        "T": 0,
+        "E": 1,
+        "S": 5,
+        "V": 3
+      }
+    },
+    {
+      "id": 3,
+      "size": 8,
+      "nodes": [
+        "E07",
+        "E10",
+        "E12",
+        "E14",
+        "E15",
+        "T02",
+        "T04",
+        "T06"
+      ],
+      "category_breakdown": {
+        "T": 3,
+        "E": 5,
+        "S": 0,
+        "V": 0
+      }
+    },
+    {
+      "id": 4,
+      "size": 7,
+      "nodes": [
+        "S06",
+        "S07",
+        "S09",
+        "T07",
+        "V01",
+        "V02",
+        "V11"
+      ],
+      "category_breakdown": {
+        "T": 1,
+        "E": 0,
+        "S": 3,
+        "V": 3
+      }
+    },
+    {
+      "id": 5,
+      "size": 6,
+      "nodes": [
+        "S05",
+        "T10",
+        "T11",
+        "T12",
+        "T13",
+        "T14"
+      ],
+      "category_breakdown": {
+        "T": 5,
+        "E": 0,
+        "S": 1,
+        "V": 0
+      }
+    },
+    {
+      "id": 6,
+      "size": 3,
+      "nodes": [
+        "E01",
+        "E05",
+        "E09"
+      ],
+      "category_breakdown": {
+        "T": 0,
+        "E": 3,
+        "S": 0,
+        "V": 0
+      }
+    },
+    {
+      "id": 7,
+      "size": 3,
+      "nodes": [
+        "S11",
+        "T05",
+        "V06"
+      ],
+      "category_breakdown": {
+        "T": 1,
+        "E": 0,
+        "S": 1,
+        "V": 1
+      }
+    },
+    {
+      "id": 8,
+      "size": 1,
+      "nodes": [
+        "T01"
+      ],
+      "category_breakdown": {
+        "T": 1,
+        "E": 0,
+        "S": 0,
+        "V": 0
+      }
+    },
+    {
+      "id": 9,
+      "size": 1,
+      "nodes": [
+        "T08"
+      ],
+      "category_breakdown": {
+        "T": 1,
+        "E": 0,
+        "S": 0,
+        "V": 0
+      }
+    },
+    {
+      "id": 10,
+      "size": 1,
+      "nodes": [
+        "T09"
+      ],
+      "category_breakdown": {
+        "T": 1,
+        "E": 0,
+        "S": 0,
+        "V": 0
+      }
+    },
+    {
+      "id": 11,
+      "size": 1,
+      "nodes": [
+        "T15"
+      ],
+      "category_breakdown": {
+        "T": 1,
+        "E": 0,
+        "S": 0,
+        "V": 0
+      }
+    },
+    {
+      "id": 12,
+      "size": 1,
+      "nodes": [
+        "E02"
+      ],
+      "category_breakdown": {
+        "T": 0,
+        "E": 1,
+        "S": 0,
+        "V": 0
+      }
+    },
+    {
+      "id": 13,
+      "size": 1,
+      "nodes": [
+        "E03"
+      ],
+      "category_breakdown": {
+        "T": 0,
+        "E": 1,
+        "S": 0,
+        "V": 0
+      }
+    },
+    {
+      "id": 14,
+      "size": 1,
+      "nodes": [
+        "E04"
+      ],
+      "category_breakdown": {
+        "T": 0,
+        "E": 1,
+        "S": 0,
+        "V": 0
+      }
+    },
+    {
+      "id": 15,
+      "size": 1,
+      "nodes": [
+        "E06"
+      ],
+      "category_breakdown": {
+        "T": 0,
+        "E": 1,
+        "S": 0,
+        "V": 0
+      }
+    },
+    {
+      "id": 16,
+      "size": 1,
+      "nodes": [
+        "E13"
+      ],
+      "category_breakdown": {
+        "T": 0,
+        "E": 1,
+        "S": 0,
+        "V": 0
+      }
+    },
+    {
+      "id": 17,
+      "size": 1,
+      "nodes": [
+        "S08"
+      ],
+      "category_breakdown": {
+        "T": 0,
+        "E": 0,
+        "S": 1,
+        "V": 0
+      }
+    }
+  ],
+  "category_subnetworks": {
+    "T": {
+      "edges": 4,
+      "density": 0.038,
+      "giant_size": 5,
+      "isolated_nodes": [
+        "T01",
+        "T02",
+        "T03",
+        "T04",
+        "T05",
+        "T06",
+        "T07",
+        "T08",
+        "T09",
+        "T15"
+      ]
+    },
+    "E": {
+      "edges": 12,
+      "density": 0.114,
+      "giant_size": 6,
+      "isolated_nodes": [
+        "E02",
+        "E03",
+        "E04",
+        "E06",
+        "E08",
+        "E13"
+      ]
+    },
+    "S": {
+      "edges": 24,
+      "density": 0.229,
+      "giant_size": 13,
+      "isolated_nodes": [
+        "S05",
+        "S08"
+      ]
+    },
+    "V": {
+      "edges": 48,
+      "density": 0.457,
+      "giant_size": 15,
+      "isolated_nodes": []
+    }
+  },
+  "student_clusters": [
+    {
+      "cluster_id": 1,
+      "size": 11,
+      "percentage": 12.9,
+      "overall_mean": 3.72,
+      "category_means": {
+        "T": 3.67,
+        "E": 3.48,
+        "S": 3.67,
+        "V": 4.05
+      }
+    },
+    {
+      "cluster_id": 2,
+      "size": 31,
+      "percentage": 36.5,
+      "overall_mean": 3.95,
+      "category_means": {
+        "T": 3.83,
+        "E": 3.85,
+        "S": 4.05,
+        "V": 4.08
+      }
+    },
+    {
+      "cluster_id": 3,
+      "size": 43,
+      "percentage": 50.6,
+      "overall_mean": 4.38,
+      "category_means": {
+        "T": 4.19,
+        "E": 4.05,
+        "S": 4.61,
+        "V": 4.69
+      }
+    }
+  ]
+}
